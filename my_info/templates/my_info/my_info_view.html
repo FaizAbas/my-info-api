@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>My Info</title>
+  <style>
+    p, h4 {
+      text-align: center;
+    }
+
+    h2 {
+      text-align: center;
+      text-decoration: underline overline;
+      font-weight: bold;
+    }
+
+    h3 {
+      text-align: center;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    body {
+      background: #e35869;
+      font-family: 'Rubik', sans-serif;
+    }
+
+    .column {
+      float: middle;
+      width: 40%;
+      background-color: antiquewhite;
+      margin: auto;
+      border: 3px solid pink;
+    }
+
+    .column-inner {
+      float: left;
+      width: 30.33%;
+      background-color: antiquewhite;
+      border: 1% solid pink;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Customer Information</h2>
+  <br>
+  {% if error_code %}
+  <h3> Request Failed </h3>
+  <p>There was problem connecting with My Info API. Please try again later.</p>
+  {% else %}
+    {% for customer in customers %}
+    <div class="column">
+      <h3>Contact Info</h3>
+      <h4>Contact Info</h4>
+      <p>Mobile Number: {{ customer.mobileno.value }} </p>
+      <p>Email Address: {{ customer.email.value }}</p>
+      <p>Registered Address</p>
+      <p>Block Number: {{ customer.regadd.block.value }} </p>
+      <p>Street Name: {{ customer.regadd.street.value }} </p>
+      <p>Building Name: {{ customer.regadd.building.value }} </p>
+      <p>Floor & Unit No: {{ customer.regadd.unit.value }} </p>
+      <p>Postal Code: {{ customer.regadd.postal.value }} </p>
+      <p>Block Number: {% if customer.housingtype.desc and customer.housingtype.desc != "" %}{{
+        customer.housingtype.desc }}{% else %}{{ customer.hdbtype.desc }}{% endif %} </p>
+    </div>
+    <div class="column">
+      <h3>Personal Info</h3>
+      <h4>Personal Info</h4>
+      <p>NRIC/FIN: {{ customer.uinfin.value }}</p>
+      <p>Principal Name: {{ customer.name.value }}</p>
+      <p>Sex: {{ customer.sex.desc }}</p>
+      <p>Date of Birth: {{ customer.dob.value }}</p>
+      <p>Country of Birth: {{ customer.birthcountry.desc }}</p>
+      <p>Residential Status: {{ customer.residentialstatus.desc }}</p>
+      <p>Nationality: {{ customer.nationality.desc }}</p>
+      <p>Race: {{ customer.race.desc }}</p>
+    </div>
+    <div class="column">
+      <h3>Income Info</h3>
+      <h4>Notice of Assesment (History)</h4>
+      <div class="row">
+        <div class="column-inner" style="width: 33.33%;">
+          <p>Year of Assessment</p>
+          <p>Employment</p>
+          <p>Trade</p>
+          <p>Interest</p>
+          <p>Rent</p>
+          <p><b>Total Income</b></p>
+          <p><b>Tax Clearence</b></p>
+        </div>
+        {% for noa in customer.noahistory.noas %}
+        <div class="column-inner" style="width: 33.33%;">
+          <p>{{ noa.yearofassessment.value }}</p>
+          <p>{{ noa.employment.value }}</p>
+          <p>{{ noa.trade.value }}</p>
+          <p>{{ noa.interest.value }}</p>
+          <p>{{ noa.rent.value }}</p>
+          <p>{{ noa.amount.value }}</p>
+          <p>{{ noa.taxclearance.value }}</p>
+        </div>
+        {% endfor %}
+      </div>
+      <h4>Other Income Information</h4>
+      <p>Ownership of Private Residential Property: {% if customer.ownerprivate.value %}&#10003;{% else %}&#65794;{% endif %}</p>
+      <h4>CPF Account Balance</h4>
+      <p>Ordinary Account (OA) (S$): {{ customer.cpfbalances.oa.value }}</p>
+      <p>Special Account (SA) (S$): {{ customer.cpfbalances.sa.value }}</p>
+      <p>Medisave Account (MA) (S$): {{ customer.cpfbalances.ma.value }}</p>
+      <h4>CPF Contribution History</h4>
+      <table>
+        <tr>
+          <th>For Month</th>
+          <th>Paid On</th>
+          <th>Amount (S$)</th>
+          <th>Employer</th>
+        </tr>
+        {% for contribution in customer.cpfcontributions.history %}
+        <tr>
+          <td>{{ contribution.month.value }}</td>
+          <td>{{ contribution.date.value }}</td>
+          <td>{{ contribution.amount.value|floatformat:-2 }}</td>
+          <td>{{ contribution.employer.value }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    {% endfor %}
+  {% endif %}
+</body>
