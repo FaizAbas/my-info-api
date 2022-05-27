@@ -21,6 +21,6 @@ Run the Django Server
 
 Open up a browser and navigate to http://localhost:3001/callback/start
 
-# After clicking on the green "I Agree" button, you'll be redirected back to a url like blow
-# http://localhost:3001/callback?code=25e3a9679bfc9baca7ef47bceadea43fcd6eb199&state=blahblah
-# You will then see the response from My Info API rendered onto html using Django Template
+After clicking on the green "I Agree" button, you'll be redirected back to a url like blow
+http://localhost:3001/callback?code=25e3a9679bfc9baca7ef47bceadea43fcd6eb199&state=blahblah
+You will then see the response from My Info API rendered onto html using Django Template
